@@ -1,0 +1,209 @@
+
+{   
+  "requestId": "${requestId}",
+  "jcbw": {
+  "jbr": "赵爽",
+  "jbrsfzjlxDm": "201",
+  "jbrsfzjhm": "220702198702092228"
+  },
+  "ywbw": [
+    {
+      "swsxDm": "SXA061041005",
+      "djxh": "${djxh}",
+      "swjgDm": "11101020000",
+      "skssqq": "${skssqq}",
+      "skssqz": "${skssqz}",
+      "gzbz": "N",
+      "mxid": "${mxid}",
+      "sbsj": "${ENCRYPT_DATA_PLACEHOLDER}"
+    }
+  ],
+  "ssjg": {
+    "fcsssjg": {
+        "djxh": "${djxh}",
+        "mxid": "${mxid}",
+        "skssqz": "${skssqz}",
+        "ssgcpclsh": "",
+        "skssqq": "${skssqq}",
+        "fcsssjgxxGrid": [
+          <#if FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float ?exists>
+          <#list FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float  as float>
+        {
+          "float": "float",
+          "ssjguuid": "${ssjguuid[float_index+1]}",
+          "nsrsbh": "${taxPayerNo}",
+          "nsrmc": "${taxpayer}",
+          "kzztlxDm": "1110",
+          "ssjezj": "${FCS_SUJGDCJ_G03!''}",
+          "hyDm": "6621",
+          "jmsxm": "",
+          "skssqq": "${skssqq}",
+          "jsxDm5": "",
+          "jsxDm4": "${float.FCS_SUJGDCJ_F03!''}",
+          "fcjsqrbz": "",
+          "jsxDm1": "${float.FCS_SUJGDCJ_C03!''}",
+          "jsxDm3": "${float.FCS_SUJGDCJ_E03!''}",
+          "jsxDm2": "${float.FCS_SUJGDCJ_D03!''}",
+          "bdcdyh": "${float.FCS_SUJGDCJ_M03!''}",
+          "zgswjgDm": "${float.FCS_SUJGDCJ_S03!''}", 
+          "fcjsqrlx": "",
+          "jsffDm1": "${float.FCS_SUJGDCJ_K03!''}", 
+          "ssjeye": "${float.FCS_SUJGDCJ_I03!''}", 
+          "zspmDm": "${float.FCS_SUJGDCJ_J03!''}", 
+          "ysxxbh": "${float.FCS_SUJGDCJ_L03!''}", 
+          "ssjejs":  "${float.FCS_SUJGDCJ_H03!''}", 
+          "fybh":  "${float.FCS_SUJGDCJ_N03!''}", 
+          "yspzbh":  "", 
+          "swsxDm": "",
+          "jsxDm": "${float.FCS_SUJGDCJ_B03!''}", 
+          "jmxzDm": "",
+          "bdcbh": "${float.FCS_SUJGDCJ_O03!''}", 
+          "ywfssj": "${float.FCS_SUJGDCJ_P03!''}", 
+          "sssqz": "${skssqz}",
+          "skssqz": "${skssqz}",
+          "sssqq": "${skssqq}",
+          "yspzlxDm": "${float.FCS_SUJGDCJ_W03!''}",  
+          "ywxwflDm": "${float.FCS_SUJGDCJ_Y03!''}",   
+          "djzclxDm": "161",
+          "fcjssycj": "",
+          "djxh":"${djxh}"
+          }<#if float_has_next>,</#if>
+          </#list>
+          </#if>
+          <#if FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float ?exists>
+          <#list FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float  as float1>
+
+          {
+              "float1": "float1",
+              "ssjguuid": "${ssjguuid1[float1_index+1]}",
+          "nsrsbh": "${taxPayerNo}",
+          "nsrmc": "${taxpayer}",
+          "kzztlxDm": "1110",
+          "ssjezj": "${float1.FCS_SUJGDCJ_G04!''}",
+          "hyDm": "6621",
+          "jmsxm": "",
+          "skssqq": "${skssqq}",
+          "jsxDm5": "",
+          "jsxDm4": "${float1.FCS_SUJGDCJ_F04!''}",
+          "fcjsqrbz": "",
+          "jsxDm1": "${float1.FCS_SUJGDCJ_C04!''}",
+          "jsxDm3": "${float1.FCS_SUJGDCJ_E04!''}",
+          "jsxDm2": "${float1.FCS_SUJGDCJ_D04!''}",
+          "bdcdyh": "${float1.FCS_SUJGDCJ_M04!''}",
+          "zgswjgDm": "${float1.FCS_SUJGDCJ_S04!''}", 
+          "fcjsqrlx": "",
+          "jsffDm1": "${float1.FCS_SUJGDCJ_K04!''}", 
+          "ssjeye": "${float1.FCS_SUJGDCJ_I04!''}", 
+          "zspmDm": "${float1.FCS_SUJGDCJ_J04!''}", 
+          "ysxxbh": "${float1.FCS_SUJGDCJ_L04!''}", 
+          "ssjejs":  "${float1.FCS_SUJGDCJ_H04!''}", 
+          "fybh":  "${float1.FCS_SUJGDCJ_N04!''}", 
+          "yspzbh":  "", 
+          "swsxDm": "",
+          "jsxDm": "${float1.FCS_SUJGDCJ_B04!''}", 
+          "jmxzDm": "",
+          "bdcbh": "${float1.FCS_SUJGDCJ_O04!''}", 
+          "ywfssj": "${float1.FCS_SUJGDCJ_P04!''}", 
+          "sssqz": "${skssqz}",
+          "skssqz": "${skssqz}",
+          "sssqq": "${skssqq}",
+          "yspzlxDm": "${float1.FCS_SUJGDCJ_W04!''}",  
+          "ywxwflDm": "${float1.FCS_SUJGDCJ_Y04!''}",   
+          "djzclxDm": "161",
+          "fcjssycj": "",
+          "djxh":"${djxh}"
+          }<#if float1_has_next>,</#if>
+          </#list>
+          </#if>
+          <#if FCS_SUJG_L03___FCS_SUJG_B03_float ?exists>
+          <#list FCS_SUJG_L03___FCS_SUJG_B03_float  as float2>
+          {
+              "float2": "float2",
+          "ssjguuid": "${ssjguuid2[float2_index+1]}",
+          "nsrsbh": "${taxPayerNo}",
+          "nsrmc": "${taxpayer}",
+          "kzztlxDm": "1110",
+          "ssjezj": "${float2.FCS_SUJG_G03!''}",
+          "hyDm": "6621",
+          "jmsxm": "",
+          "skssqq": "${skssqq}",
+          "jsxDm5": "",
+          "jsxDm4": "${float2.FCS_SUJG_F03!''}",
+          "fcjsqrbz": "",
+          "jsxDm1": "${float2.FCS_SUJG_C03!''}",
+          "jsxDm3": "${float2.FCS_SUJG_E03!''}",
+          "jsxDm2": "${float2.FCS_SUJG_D03!''}",
+          "bdcdyh": "${float2.FCS_SUJG_M03!''}",
+          "zgswjgDm": "${float2.FCS_SUJG_S03!''}", 
+          "fcjsqrlx": "",
+          "jsffDm1": "${float2.FCS_SUJG_K03!''}", 
+          "ssjeye": "${float2.FCS_SUJG_I03!''}", 
+          "zspmDm": "${float2.FCS_SUJG_J03!''}", 
+          "ysxxbh": "${float2.FCS_SUJG_L03!''}", 
+          "ssjejs":  "${float2.FCS_SUJG_H03!''}", 
+          "fybh":  "${float2.FCS_SUJG_N03!''}", 
+          "yspzbh":  "", 
+          "swsxDm": "",
+          "jsxDm": "${float2.FCS_SUJG_B03!''}", 
+          "jmxzDm": "",
+          "bdcbh": "${float2.FCS_SUJG_O03!''}", 
+          "ywfssj": "${float2.FCS_SUJG_P03!''}", 
+          "sssqz": "${skssqz}",
+          "skssqz": "${skssqz}",
+          "sssqq": "${skssqq}",
+          "yspzlxDm": "${float2.FCS_SUJG_W03!''}",  
+          "ywxwflDm": "${float2.FCS_SUJG_Y03!''}",   
+          "djzclxDm": "161",
+          "fcjssycj": "",
+          "djxh":"${djxh}"
+          }<#if float2_has_next>,</#if>
+          </#list>
+          </#if>
+         <#if FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float ?exists>
+          <#list FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float  as float3>
+          {
+            "float3": "float3",
+          "ssjguuid": "${ssjguuid3[float3_index+1]}",
+          "nsrsbh": "${taxPayerNo}",
+          "nsrmc": "${taxpayer}",
+          "kzztlxDm": "1110",
+          "ssjezj": "${float3.FCS_SUJGCZ_G03!''}",
+          "hyDm": "6621",
+          "jmsxm": "",
+          "skssqq": "${skssqq}",
+          "jsxDm5": "",
+          "jsxDm4": "${float3.FCS_SUJGCZ_F03!''}",
+          "fcjsqrbz": "",
+          "jsxDm1": "${float3.FCS_SUJGCZ_C03!''}",
+          "jsxDm3": "${float3.FCS_SUJGCZ_E03!''}",
+          "jsxDm2": "${float3.FCS_SUJGCZ_D03!''}",
+          "bdcdyh": "${float3.FCS_SUJGCZ_M03!''}",
+          "zgswjgDm": "${float3.FCS_SUJGCZ_S03!''}", 
+          "fcjsqrlx": "",
+          "jsffDm1": "${float3.FCS_SUJGCZ_K03!''}", 
+          "ssjeye": "${float3.FCS_SUJGCZ_I03!''}", 
+          "zspmDm": "${float3.FCS_SUJGCZ_J03!''}", 
+          "ysxxbh": "${float3.FCS_SUJGCZ_L03!''}", 
+          "ssjejs":  "${float3.FCS_SUJGCZ_H03!''}", 
+          "fybh":  "${float3.FCS_SUJGCZ_N03!''}", 
+          "yspzbh":  "", 
+          "swsxDm": "",
+          "jsxDm": "${float3.FCS_SUJGCZ_B03!''}", 
+          "jmxzDm": "",
+          "bdcbh": "${float3.FCS_SUJGCZ_O03!''}", 
+          "ywfssj": "${float3.FCS_SUJGCZ_P03!''}", 
+          "sssqz": "${skssqz}",
+          "skssqz": "${skssqz}",
+          "sssqq": "${skssqq}",
+          "yspzlxDm": "${float3.FCS_SUJGCZ_W03!''}",  
+          "ywxwflDm": "${float3.FCS_SUJGCZ_Y03!''}",   
+          "djzclxDm": "161",
+          "fcjssycj": "",
+          "djxh":"${djxh}"
+          }<#if float3_has_next>,</#if>
+          </#list>
+          </#if>
+      ]
+  }
+  }
+}
