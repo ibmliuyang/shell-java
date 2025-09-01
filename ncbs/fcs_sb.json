@@ -1,4 +1,3 @@
-
 {   
   "requestId": "${requestId}",
   "jcbw": {
@@ -26,10 +25,11 @@
         "ssgcpclsh": "",
         "skssqq": "${skssqq}",
         "fcsssjgxxGrid": [
-          <#if FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float ?exists>
-          <#list FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float  as float>
-        {
-          "float": "float",
+          <#assign hasData = false>
+          <#if FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float?exists && FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float?has_content>
+          <#list FCS_SUJGDCJ_L03___FCS_SUJGDCJ_B03_float as float>
+            <#if hasData>,</#if>
+            {
           "ssjguuid": "${ssjguuid[float_index+1]}",
           "nsrsbh": "${taxPayerNo}",
           "nsrmc": "${taxpayer}",
@@ -67,14 +67,14 @@
           "djzclxDm": "161",
           "fcjssycj": "",
           "djxh":"${djxh}"
-          }<#if float_has_next>,</#if>
+          }
+          <#assign hasData = true>
           </#list>
           </#if>
-          <#if FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float ?exists>
-          <#list FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float  as float1>
-
+          <#if FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float?exists && FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float?has_content>
+          <#list FCS_SUJGDCJ_L04___FCS_SUJGDCJ_B04_float as float1>
+            <#if hasData>,</#if>
           {
-              "float1": "float1",
               "ssjguuid": "${ssjguuid1[float1_index+1]}",
           "nsrsbh": "${taxPayerNo}",
           "nsrmc": "${taxpayer}",
@@ -112,13 +112,14 @@
           "djzclxDm": "161",
           "fcjssycj": "",
           "djxh":"${djxh}"
-          }<#if float1_has_next>,</#if>
+          }
+          <#assign hasData = true>
           </#list>
           </#if>
-          <#if FCS_SUJG_L03___FCS_SUJG_B03_float ?exists>
-          <#list FCS_SUJG_L03___FCS_SUJG_B03_float  as float2>
+          <#if FCS_SUJG_L03___FCS_SUJG_B03_float?exists && FCS_SUJG_L03___FCS_SUJG_B03_float?has_content>
+          <#list FCS_SUJG_L03___FCS_SUJG_B03_float as float2>
+            <#if hasData>,</#if>
           {
-              "float2": "float2",
           "ssjguuid": "${ssjguuid2[float2_index+1]}",
           "nsrsbh": "${taxPayerNo}",
           "nsrmc": "${taxpayer}",
@@ -156,13 +157,14 @@
           "djzclxDm": "161",
           "fcjssycj": "",
           "djxh":"${djxh}"
-          }<#if float2_has_next>,</#if>
+          }
+          <#assign hasData = true>
           </#list>
           </#if>
-         <#if FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float ?exists>
-          <#list FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float  as float3>
+         <#if FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float?exists && FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float?has_content>
+          <#list FCS_SUJGCZ_L03___FCS_SUJGCZ_B03_float as float3>
+            <#if hasData>,</#if>
           {
-            "float3": "float3",
           "ssjguuid": "${ssjguuid3[float3_index+1]}",
           "nsrsbh": "${taxPayerNo}",
           "nsrmc": "${taxpayer}",
@@ -200,7 +202,8 @@
           "djzclxDm": "161",
           "fcjssycj": "",
           "djxh":"${djxh}"
-          }<#if float3_has_next>,</#if>
+          }
+          <#assign hasData = true>
           </#list>
           </#if>
       ]
