@@ -1,22 +1,21 @@
 #!/bin/bash
 #***************************************************************
 #系统名称： 税务管理系统
-#脚本名称： ift_ncbs_ccllnb_basic_attr.sh
-#脚本功能： 对公贷款属性表（架构重构版）
+#脚本名称： ift_ecas_crllnb_bad_ast.sh
+#脚本功能： 零售贷款不良资产登记簿
 #
 #版本        日期       编写者    项目组/修改内容
 #-------   -------     -------  ----------
 #v1.0      2025-02-24  祝  刚    税务管理系统/新建
-#v2.0      2025-08-25  刘扬      税务管理系统/Shell+Java架构重构
 #****************************************************************
 
-# 设置字符编码
-export LANG=zh_CN.UTF-8
 
 # 当前脚本目录
 script_dir="$(dirname "$(readlink -f "$0")")"
 # 表名
-org_table_name="ccllnb_basic_attr"
+org_table_name="crllnb_bad_ast"
+# 维护日期所在列
+maintain_date_col=38
 
 # 源文件目录
 source_dir="/cebtms/files/ift/ecas"
@@ -25,7 +24,9 @@ work_dir="/cebtms/files/ift/work/${org_table_name}"
 # 备份目录
 bak_dir='/cebtms/files/bak/ift/ecas'
 
-# 目标文件名
+# 清表数据SQL
+TRUNCATE_SQL="truncate table tp_ncbs_${org_table_name};"
+TABLE_COLUMNS=--columns=ln_due_bill_no,dtl_seri_no,cust_no,capital_src_acct_no,impai_provis_acct_no,impai_provis,repaym_tot_amt,repay_pri_amt,repay_int_amt,pri_tot,int_tot,tran_dt,tran_inst_no,wri_off_pri,wri_off_int,alr_wri_off_pri_int,wri_off_int_compou_int,ln_acct_stat,capital_src_acct_name,ln_form,bad_ast_tran_poss_stat,biz_inst_no,accoun_inst_no,tell_seq_no,retu_wri_off_pri,retu_wri_off_int,retu_alr_wri_off_pri_int,retu_wri_off_int_compou_int,bad_ast_tran_poss_manr,revol_fund_amt,revol_amt1,revol_amt2,rese_fie,rese_fie_1,rese_fie_2,mainte_tell,mainte_inst,mainte_dt,mainte_tm,record_stat,overa_sit_aff_stat,overa_sit_aff_seq_no,optim_lock_vers_no,sys_timest
 TARGET_FILE=tp_ncbs_${org_table_name}.txt
 
 # 检查目标目录是否存在，如果不存在则创建
@@ -36,6 +37,9 @@ if [ ! -d "$bak_dir" ]; then
     mkdir -p "$bak_dir"
 fi
 
+#数据库连接
+export DB_USERID="-h ${db_host} -P ${db_port} -u ${db_username} -p${db_password}"
+
 # 数据文件
 # 获取今天的日期
 today_with_dash=$(date -d "today" +%Y-%m-%d)
@@ -45,7 +49,6 @@ yesterday_with_dash=$(date -d "yesterday" +%Y-%m-%d)
 
 # 构建文件名模式
 pattern="a_ncbs_${org_table_name}_${yesterday}_*.dat.gz.ok"
-
 # 日志目录
 DN_OUTPUT=`date +%Y%m%d`
 LOGPATH="/cebtms/files/logs/batch/${DN_OUTPUT}"
@@ -53,18 +56,17 @@ LOGFILE="${LOGPATH}/tms_sync_ift_data_${org_table_name}_${DN_OUTPUT}.log"
 
 #判断日志文件路径
 if [ -d ${LOGPATH} ] ;then
-	echo `date "+%Y-%m-%d %H:%M:%S"` "日志文件路径存在" >> ${LOGFILE}
+	echo `date "+%Y-%m-%d %H:%M:%S"` "日志文件路径存在"
 else
-	echo `date "+%Y-%m-%d %H:%M:%S"` "创建日志文件路径" >> ${LOGFILE}
+	echo `date "+%Y-%m-%d %H:%M:%S"` "创建日志文件路径"
 	mkdir -p ${LOGPATH}
 fi
-echo `date "+%Y-%m-%d %H:%M:%S"` "创建日志文件" >> ${LOGFILE}
+echo `date "+%Y-%m-%d %H:%M:%S"` "创建日志文件"
 touch ${LOGFILE}
-
 # 加锁文件定义
 CHECK_LOCK_FILE="${LOGPATH}/tms_sync_ift_data_${org_table_name}.lock"
 
-#定义加文件锁函数
+#加文件锁
 tmsLock(){
     echo `date "+%Y-%m-%d %H:%M:%S"` "检查并防止重复执行..." >> ${LOGFILE}
 	if [ -f ${CHECK_LOCK_FILE} ] ;then
@@ -78,12 +80,11 @@ tmsLock(){
 	fi
 }
 
-#定义解锁函数
+#解锁
 tmsUnlock(){
 	echo `date "+%Y-%m-%d %H:%M:%S"` "解除锁文件:${CHECK_LOCK_FILE}" >> ${LOGFILE}
 	rm -f ${CHECK_LOCK_FILE}
 }
-
 # 检查是否上锁
 tmsLock
 
@@ -94,9 +95,8 @@ files=$(find ${source_dir} -maxdepth 1 -type f -name "${pattern}")
 if [ -z "$files" ]; then
     echo `date "+%Y-%m-%d %H:%M:%S"` "没有找到符合条件的文件: ${pattern}" >> ${LOGFILE}
     echo `date "+%Y-%m-%d %H:%M:%S"` "脚本执行结束 失败" >> ${LOGFILE}
-    fail='-1'
-    echo $fail >> ${LOGFILE}
-    echo $fail
+    echo '1' >> ${LOGFILE}
+    echo 1
     tmsUnlock
     exit 1
 fi
@@ -120,54 +120,35 @@ for file in $files; do
     # 解压文件到目标目录
     gunzip -c "${data_file}" > "${unzip_data_file}"
 
-    # 修改名称为标准格式
-    mv "${unzip_data_file}" "${work_dir}/${TARGET_FILE}"
-
-    # 检查处理后的文件是否存在
-    if [ ! -f "${work_dir}/${TARGET_FILE}" ]; then
-        echo `date "+%Y-%m-%d %H:%M:%S"` "处理后的文件不存在: ${work_dir}/${TARGET_FILE}" >> ${LOGFILE}
-        tmsUnlock
-        exit 1
+    if [ -n "$maintain_date_col" ]; then
+        # 过滤数据
+        echo `date "+%Y-%m-%d %H:%M:%S"` "过滤数据 yesterday_with_dash=$yesterday_with_dash" >> ${LOGFILE}
+        awk -F '\\|\\+\\|' -v maintain_date_col="$maintain_date_col" -v today_with_dash="$today_with_dash" -v yesterday_with_dash="$yesterday_with_dash" '$maintain_date_col == yesterday_with_dash' "$unzip_data_file" > "${work_dir}/temp.txt"
+        mv "${work_dir}/temp.txt" "$unzip_data_file"
     fi
 
-    # 记录文件行数
-    line_count=$(wc -l < "${work_dir}/${TARGET_FILE}")
-    echo `date "+%Y-%m-%d %H:%M:%S"` "处理后文件行数: $line_count" >> ${LOGFILE}
+    # 导入数据到数据库中
+    # 修改名称
+    mv "${unzip_data_file}" "${work_dir}/${TARGET_FILE}"
+	# 清空表数据
+	echo `date "+%Y-%m-%d %H:%M:%S"` "清空表数据" >> ${LOGFILE}
+	/edb/app/mysql-5.7/bin/mysql ${DB_USERID} -B ${db_name} -e "${TRUNCATE_SQL}"
+    # insert data
+	echo `date "+%Y-%m-%d %H:%M:%S"` "导入新数据" >> ${LOGFILE}
+    if( /edb/app/mysql-5.7/bin/mysqlimport --socket=/mysqldata/3309/socket/mysql.sock ${DB_USERID} ${db_name} --fields-terminated-by='|+|' ${TABLE_COLUMNS} --local ${work_dir}/${TARGET_FILE} --verbose )
+    then
+	    echo `date "+%Y-%m-%d %H:%M:%S"` "导入新数据完成" >> ${LOGFILE}
+    else
+        echo `date "+%Y-%m-%d %H:%M:%S"` "导入新数据失败" >> ${LOGFILE}
+    fi
 
-    # 调用Java API进行数据导入
-    echo `date "+%Y-%m-%d %H:%M:%S"` "-----------开始调用Java API导入数据--------" >> ${LOGFILE}
+    # 删除数据文件
+    rm ${file}
+    rm "${work_dir}/${TARGET_FILE}"
 
-    # Java API接口地址
-    api_url="http://tms-app-cdc:19201/webapi/ncbs-ccllnb-basic-attr/sync"
-    # 超时设置
-    time_url="--connect-timeout 30 --max-time 1800"
-
-    # 构建请求参数
-    request_data=$(cat <<EOF
-{
-    "filePath": "${work_dir}/${TARGET_FILE}",
-    "processDate": "${yesterday_with_dash}",
-    "tableName": "tp_ncbs_${org_table_name}"
-}
-EOF
-)
-    echo `date "+%Y-%m-%d %H:%M:%S"` "请求参数: $request_data" >> ${LOGFILE}
-    echo `date "+%Y-%m-%d %H:%M:%S"` "调用接口: $api_url" >> ${LOGFILE}
-    
-    # 调用Java API
-    result=`curl -s $time_url -X POST -H "Content-Type: application/json" -d "$request_data" $api_url`
-
-    # 调用完成时间
-    echo `date "+%Y-%m-%d %H:%M:%S"` "执行完成，返回结果：result=$result" >> ${LOGFILE}
-    echo `date "+%Y-%m-%d %H:%M:%S"` "-----------数据导入成功!!!!!!-----开始处理临时文件--------" >> ${LOGFILE}
-    
-    # 删除处理文件
-    rm -f ${file}
-    rm -f "${work_dir}/${TARGET_FILE}"
     # 移动原文件到备份目录
     mv "${data_file}" "${bak_dir}"
-    echo `date "+%Y-%m-%d %H:%M:%S"` "文件处理完成，已移动到备份目录" >> ${LOGFILE}
-    echo `date "+%Y-%m-%d %H:%M:%S"` "-----------Java API调用完成--------" >> ${LOGFILE}
+
     found_data_files=true
 done
 
@@ -175,22 +156,13 @@ done
 if ! $found_data_files; then
     echo `date "+%Y-%m-%d %H:%M:%S"` "没有找到符合条件的数据文件" >> ${LOGFILE}
     echo `date "+%Y-%m-%d %H:%M:%S"` "脚本执行结束 失败" >> ${LOGFILE}
-    fail='-1'
-    echo $fail >> ${LOGFILE}
-    echo $fail
+    echo '1' >> ${LOGFILE}
+    echo 1
     tmsUnlock
     exit 1
 fi
-
-#解锁文件
-tmsUnlock
-
-#返回结果定义
-success='0'
-fail='-1'
-
 # 正常结束
-echo `date "+%Y-%m-%d %H:%M:%S"` "脚本执行结束 成功" >> ${LOGFILE}
-echo $success >> ${LOGFILE}
-echo $success
+echo 0 >> ${LOGFILE}
+echo 0
+tmsUnlock
 exit 0
